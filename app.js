@@ -10,12 +10,20 @@ const connectDB = require('./config/db');
 dotenv.config({ path: './config.env' });
 
 const app = express();
+
+//setup ejs
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.static(path.join(__dirname, 'public'))); 
 const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
-
+app.get('/', (req, res) => {
+    res.render('index');
+});
 //routes
 app.use('/api/v1/stores', require('./routes/stores.route'));
 connectDB().then(() => {
